@@ -113,13 +113,13 @@ int main(int argc, char **argv)
 
     struct sockaddr_in server_address;
 
-    /* Socket settings */
+    // socket settings
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     server_address.sin_family = AF_INET;
     server_address.sin_addr.s_addr = inet_addr(ip);
     server_address.sin_port = htons(port);
 
-    // Connect to Server
+    // connect to server
     int err = connect(sockfd, (struct sockaddr *)&server_address, sizeof(server_address));
     if (err == -1)
     {
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    // Send name
+    // send name
     send(sockfd, name, 32, 0);
 
     printf("~~~~~ Welcome to the Chat Room ~~~~~\n");

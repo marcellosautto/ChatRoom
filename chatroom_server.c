@@ -14,8 +14,8 @@
 #define BUFFER_SIZE 2048
 #define NAME_LEN 32
 
-static _Atomic unsigned int client_count = 0;
-static int uid = 10;
+static _Atomic unsigned int client_count = 0; //atomic for thread access
+static int uid = 1;
 
 // client structure
 typedef struct
