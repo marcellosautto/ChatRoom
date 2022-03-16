@@ -20,36 +20,39 @@ static int uid = 10;
 // client structure
 typedef struct
 {
-    struct sockaddr_in address;
-    int sockfd;
-    int uid;
-    char name[NAME_LEN];
+    struct sockaddr_in address; //ip address
+    int sockfd; //client socket
+    int uid; //unique id
+    char name[NAME_LEN]; //client username
 } client_t;
 
 // client container
 client_t *clients[CLIENT_CAPACITY];
 
-// thread for each client
+// thread for critical section to prevent simultaneous process execution
 pthread_mutex_t clients_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+//chat prompt
 void string_overwrite()
 {
     printf("\r%s", "> ");
     fflush(stdout);
 }
 
-void string_trim(char *arr, int length)
+//set null char at end of msg
+void string_trim(char *msg, int length)
 {
     for (int i = 0; i < length; i++)
     {
-        if (arr[i] == '\n')
+        if (msg[i] == '\n')
         {
-            arr[i] = '\0';
+            msg[i] = '\0';
             break;
         }
     }
 }
 
+//add client to queue
 void queue_add(client_t *client)
 {
     pthread_mutex_lock(&clients_mutex);
@@ -65,6 +68,7 @@ void queue_add(client_t *client)
     pthread_mutex_unlock(&clients_mutex);
 }
 
+//remove client from queue
 void queue_remove(int uid)
 {
     pthread_mutex_lock(&clients_mutex);
